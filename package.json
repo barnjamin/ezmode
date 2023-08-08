@@ -1,0 +1,22 @@
+{
+  "name": "ezmode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "doit": "npx tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@wormhole-foundation/connect-sdk": "^0.1.0-beta",
+    "@wormhole-foundation/connect-sdk-evm": "^0.1.0-beta",
+    "@wormhole-foundation/connect-sdk-solana": "^0.1.0-beta"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.8",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}
