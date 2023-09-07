@@ -1,9 +1,10 @@
 import { ChainName, Wormhole } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
+import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 import { fmtForDisplay, getStuff } from "./helpers";
 
 (async function () {
-  const wh = new Wormhole("Testnet", [EvmPlatform]);
+  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
   // Native is the gas token for any chain (e.g. Eth for Ethereum, Sol for Solana, etc..)
   const token = "native";
@@ -13,7 +14,7 @@ import { fmtForDisplay, getStuff } from "./helpers";
     wh.getChain("Avalanche")
   );
   const { signer: toSigner, address: toAddress } = await getStuff(
-    wh.getChain("Celo")
+    wh.getChain("Solana")
   );
 
   // Grab some balances
