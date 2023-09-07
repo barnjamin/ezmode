@@ -1,5 +1,6 @@
 import { Wormhole } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
+import { fmtForDisplay } from "./helpers";
 
 (async function () {
   const wh = new Wormhole("Testnet", [EvmPlatform]);
@@ -12,13 +13,3 @@ import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 
   console.log(fmtForDisplay(balance!, decimals, 8));
 })();
-
-function fmtForDisplay(
-  value: bigint,
-  actual_decimals: bigint,
-  display_decimals: number
-): number {
-  const fixedPlace =
-    value / 10n ** (actual_decimals - BigInt(display_decimals));
-  return Number(fixedPlace) / 10 ** display_decimals;
-}
