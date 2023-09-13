@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "doit": "npx tsx src/index.ts"
+    "doit": "npx tsx src/index.ts",
+    "lookup":"npx tsx src/lookup-wrapped.ts"
   },
   "keywords": [],
   "author": "",
