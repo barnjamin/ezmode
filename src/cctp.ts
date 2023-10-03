@@ -4,8 +4,8 @@ import { getStuff } from "./helpers";
 
 /*
 Notes:
-Only a subset of chains are supported by Circle for CCTP, see core/base/src/constants/circle.ts for currently supported chains
-AutoRelayer takes a 0.1usdc fee when xfering to any chain beside goerli, which is 1 usdc
+- Only a subset of chains are supported by Circle for CCTP, see core/base/src/constants/circle.ts for currently supported chains
+- AutoRelayer takes a 0.1usdc fee when xfering to any chain beside goerli, which is 1 usdc
 */
 
 (async function () {
