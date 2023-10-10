@@ -28,7 +28,7 @@ ETH_PRIVATE_KEY="BASE_16_PRIVATE_KEY"
 The program provided executes a simple manual token transfer from Avalanche to Celo.
 
 ```sh
-npm run doit
+npm run transfer
 ```
 
 

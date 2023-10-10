@@ -37,7 +37,7 @@ export async function getStuff(
     default:
       signer = await getEvmSigner(
         chain.chain,
-        chain.getRpc() as ethers.Provider
+        (await chain.getRpc()) as ethers.Provider
       );
   }
 
@@ -128,7 +128,6 @@ class EthSigner implements Signer {
       maxFeePerGas = feeData.maxFeePerGas ?? maxFeePerGas;
     }
 
-
     for (const txn of tx) {
       const { transaction, description } = txn;
       console.log(`Signing: ${description} for ${this.address()}`);
@@ -136,7 +135,7 @@ class EthSigner implements Signer {
       const t: ethers.TransactionRequest = {
         ...transaction,
         ...{
-          gasLimit: 10_000_000n,
+          gasLimit: 500_000n,
           gasPrice: gasPrice,
           maxFeePerGas: maxFeePerGas,
           nonce: this.nonce,

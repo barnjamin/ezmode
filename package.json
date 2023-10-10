@@ -4,17 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "doit": "npx tsx src/index.ts",
-    "lookup":"npx tsx src/lookup-wrapped.ts",
-    "attest":"npx tsx src/attest-all.ts"
+    "transfer": "npx tsx src/index.ts",
+    "cctp": "npx tsx src/cctp.ts",
+    "attest": "npx tsx src/attest-all.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wormhole-foundation/connect-sdk": "^0.1.3-beta.7",
-    "@wormhole-foundation/connect-sdk-evm": "^0.1.3-beta.7",
-    "@wormhole-foundation/connect-sdk-solana": "^0.1.3-beta.7",
+    "@wormhole-foundation/connect-sdk": "^0.1.5-beta",
+    "@wormhole-foundation/connect-sdk-evm": "^0.1.5",
+    "@wormhole-foundation/connect-sdk-solana": "^0.1.5",
     "bs58": "^5.0.0",
     "dotenv": "^16.3.1"
   },

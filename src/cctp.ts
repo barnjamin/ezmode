@@ -1,4 +1,4 @@
-import { Wormhole } from "@wormhole-foundation/connect-sdk";
+import { CCTPTransfer, Wormhole } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { getStuff } from "./helpers";
 
@@ -20,12 +20,16 @@ Notes:
     wh.getChain("Ethereum")
   );
 
+  // const xfer = await CCTPTransfer.from(wh, {
+  //   chain: "Avalanche",
+  //   txid: "0xc608df52cedefdb6618511e8aae00afe8bb4fd082dd1b614da5c3f58d071b2a7",
+  // });
   const xfer = await wh.cctpTransfer(1_000_000n, srcAddress, rcvAddress, false);
 
   const srcTxids = await xfer.initiateTransfer(srcSigner);
   console.log(`Started Transfer: `, srcTxids);
 
-  const attestIds = await xfer.fetchAttestation(1000);
+  const attestIds = await xfer.fetchAttestation();
   console.log(`Got Attestation: `, attestIds);
 
   const dstTxids = await xfer.completeTransfer(rcvSigner);
