@@ -1,4 +1,8 @@
-import { CCTPTransfer, Wormhole } from "@wormhole-foundation/connect-sdk";
+import {
+  CCTPTransfer,
+  Wormhole,
+  normalizeAmount,
+} from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { getStuff } from "./helpers";
 
@@ -13,25 +17,39 @@ Notes:
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
   const wh = new Wormhole("Testnet", [EvmPlatform]);
 
-  const { signer: srcSigner, address: srcAddress } = await getStuff(
-    wh.getChain("Avalanche")
-  );
+  const origin = wh.getChain("Avalanche");
+  const destination = wh.getChain("Ethereum");
+
+  // See https://developers.circle.com/stablecoin/docs/cctp-technical-reference#mainnet
+  // for timing of attestation availablity
+  const attestTimeout = 60_000; // 60 seconds
+
+  // Get signers
+  const { signer: srcSigner, address: srcAddress } = await getStuff(origin);
   const { signer: rcvSigner, address: rcvAddress } = await getStuff(
-    wh.getChain("Ethereum")
+    destination
   );
 
-  // const xfer = await CCTPTransfer.from(wh, {
-  //   chain: "Avalanche",
-  //   txid: "0xc608df52cedefdb6618511e8aae00afe8bb4fd082dd1b614da5c3f58d071b2a7",
-  // });
-  const xfer = await wh.cctpTransfer(1_000_000n, srcAddress, rcvAddress, false);
+  // TODO put this in config tho technically it could be pulled from
+  // the chain method given the usdc token address
+  // USDC has 6 decimal places
+  const amt = normalizeAmount(1, 6n);
+
+  // Create a (Manual) transfer
+  const xfer = await wh.cctpTransfer(amt, srcAddress, rcvAddress, false);
 
   const srcTxids = await xfer.initiateTransfer(srcSigner);
   console.log(`Started Transfer: `, srcTxids);
 
-  const attestIds = await xfer.fetchAttestation();
+  const attestIds = await xfer.fetchAttestation(attestTimeout);
   console.log(`Got Attestation: `, attestIds);
 
   const dstTxids = await xfer.completeTransfer(rcvSigner);
   console.log(`Completed Transfer: `, dstTxids);
+
+  // Or pick up an in-flight transfer from origin txid
+  // const xfer = await CCTPTransfer.from(wh, {
+  //   chain: "Avalanche",
+  //   txid: "0xc608df52cedefdb6618511e8aae00afe8bb4fd082dd1b614da5c3f58d071b2a7",
+  // });
 })();
