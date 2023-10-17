@@ -119,12 +119,16 @@ class EthSigner implements Signer {
   }
   async sign(tx: UnsignedTransaction[]): Promise<SignedTx[]> {
     const signed = [];
-    let gasPrice = 40_000_000n;
-    let maxFeePerGas = 40_000_000_000n;
+    const gasLimit = 150_000n;
+    let gasPrice = 10n;
+    let maxFeePerGas = 1_500_000_000n;
+    let maxPriorityFeePerGas = maxFeePerGas;
 
     if (this._chain !== "Celo") {
       const feeData = await this.provider.getFeeData();
       gasPrice = feeData.gasPrice ?? gasPrice;
+      maxPriorityFeePerGas =
+        feeData.maxPriorityFeePerGas ?? maxPriorityFeePerGas;
       maxFeePerGas = feeData.maxFeePerGas ?? maxFeePerGas;
     }
 
@@ -135,8 +139,9 @@ class EthSigner implements Signer {
       const t: ethers.TransactionRequest = {
         ...transaction,
         ...{
-          gasLimit: 250_000n,
+          gasLimit: gasLimit,
           gasPrice: gasPrice,
+          maxPriorityFeePerGas: maxFeePerGas,
           maxFeePerGas: maxFeePerGas,
           nonce: this.nonce,
         },

@@ -2,10 +2,12 @@ import { TokenId, Wormhole, chains } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 
+// Lookup the Wrapped version of the original token on any chain's Token Bridge 
 (async function () {
   const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
-  const token: TokenId = {
+  // The original token we want to find the wrapped version of 
+  const originalToken: TokenId = {
     chain: "Ethereum",
     address: wh.parseAddress(
       "Ethereum",
@@ -13,13 +15,15 @@ import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
     ),
   };
 
+  // Fire 'em off async
   const resultPromises = chains.map(async (chain) => {
+    const tb = await wh.getChain(chain).getTokenBridge();
     try {
-      const c = wh.getChain(chain);
-      const tb = await c.getTokenBridge();
-      const wrapped = await tb.getWrappedAsset(token);
+      // If it doesn't exist, this will throw. The `hasWrappedAsset` will _not_ throw but
+      // will only return a boolean 
+      const wrapped = await tb.getWrappedAsset(originalToken);
       return { chain, wrapped: wrapped.toUniversalAddress().toString() };
-    } catch (e) {}
+    } catch (e) { }
     return { chain, wrapped: null };
   });
 

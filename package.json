@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lookup": "npx tsx src/lookup-original.ts",
+    "original": "npx tsx src/lookup-original.ts",
+    "wrapped": "npx tsx src/lookup-wrapped.ts",
     "transfer": "npx tsx src/index.ts",
     "cctp": "npx tsx src/cctp.ts",
     "attest": "npx tsx src/attest-all.ts"
