@@ -70,7 +70,7 @@ export function getSolSigner(chain: ChainName): SolSigner {
 }
 
 class SolSigner implements Signer {
-  constructor(private _chain: ChainName, private _keypair: Keypair) {}
+  constructor(private _chain: ChainName, private _keypair: Keypair) { }
 
   chain(): ChainName {
     return this._chain;
@@ -110,7 +110,7 @@ class EthSigner implements Signer {
     private _wallet: ethers.Wallet,
     private nonce: number,
     private provider: ethers.Provider
-  ) {}
+  ) { }
   chain(): ChainName {
     return this._chain;
   }
@@ -119,7 +119,7 @@ class EthSigner implements Signer {
   }
   async sign(tx: UnsignedTransaction[]): Promise<SignedTx[]> {
     const signed = [];
-    const gasLimit = 150_000n;
+    const gasLimit = 500_000n;
     let gasPrice = 10n;
     let maxFeePerGas = 1_500_000_000n;
     let maxPriorityFeePerGas = maxFeePerGas;
