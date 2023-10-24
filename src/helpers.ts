@@ -9,6 +9,7 @@ import {
   WormholeTransfer,
   ChainName,
   PlatformName,
+  SignOnlySigner,
 } from "@wormhole-foundation/connect-sdk";
 
 import bs58 from "bs58";
@@ -69,7 +70,7 @@ export function getSolSigner(chain: ChainName): SolSigner {
   return new SolSigner(chain, Keypair.fromSecretKey(bs58.decode(pk)));
 }
 
-class SolSigner implements Signer {
+class SolSigner implements SignOnlySigner {
   constructor(private _chain: ChainName, private _keypair: Keypair) { }
 
   chain(): ChainName {
@@ -104,7 +105,7 @@ class SolSigner implements Signer {
   }
 }
 
-class EthSigner implements Signer {
+class EthSigner implements SignOnlySigner {
   constructor(
     private _chain: ChainName,
     private _wallet: ethers.Wallet,

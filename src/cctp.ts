@@ -32,7 +32,7 @@ Notes:
 
   // TODO put this in config tho technically it could be pulled from
   // the chain method given the usdc token address
-  // USDC has 6 decimal places
+  // USDC has 6 decimal places (almost everywhere?)
   const amt = normalizeAmount(1, 6n);
 
   // Create a (Manual) transfer
@@ -50,7 +50,7 @@ Notes:
   // Or pick up an in-flight transfer from origin txid
   // const xfer = await CCTPTransfer.from(wh, {
   //   chain: "Avalanche",
-  //   txid: "0x90c5e9fa6a48464c8e4e9dcef3adef6ff26d92fd298bf19c364494116a68d2f4",
+  //   txid: "0x1e87dc369c2825e8ff0c1f40054ae0007fb31b13466b6a94033ddcd6e5680e74",
   // });
   // console.log(await xfer.completeTransfer(rcvSigner));
 })();

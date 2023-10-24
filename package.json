@@ -14,9 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wormhole-foundation/connect-sdk": "^0.1.6-beta.1",
-    "@wormhole-foundation/connect-sdk-evm": "^0.1.6-beta.1",
-    "@wormhole-foundation/connect-sdk-solana": "^0.1.6-beta.1",
+    "@wormhole-foundation/connect-sdk": "^0.1.6",
+    "@wormhole-foundation/connect-sdk-evm": "^0.1.6",
+    "@wormhole-foundation/connect-sdk-solana": "^0.1.6",
     "bs58": "^5.0.0",
     "dotenv": "^16.3.1"
   },
