@@ -1,10 +1,10 @@
-import {
-  CCTPTransfer,
-  Wormhole,
-  normalizeAmount,
-} from "@wormhole-foundation/connect-sdk";
+import { Wormhole, normalizeAmount } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { getStuff } from "./helpers";
+
+import "@wormhole-foundation/connect-sdk-evm-core";
+import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
+import "@wormhole-foundation/connect-sdk-evm-cctp";
 
 /*
 Notes:
@@ -18,7 +18,7 @@ Notes:
   const wh = new Wormhole("Testnet", [EvmPlatform]);
 
   const origin = wh.getChain("Avalanche");
-  const destination = wh.getChain("Ethereum");
+  const destination = wh.getChain("Optimism");
 
   // See https://developers.circle.com/stablecoin/docs/cctp-technical-reference#mainnet
   // for timing of attestation availablity
@@ -36,7 +36,7 @@ Notes:
   const amt = normalizeAmount(1, 6n);
 
   // Create a (Manual) transfer
-  const xfer = await wh.cctpTransfer(amt, srcAddress, rcvAddress, false);
+  const xfer = await wh.circleTransfer(amt, srcAddress, rcvAddress, false);
 
   const srcTxids = await xfer.initiateTransfer(srcSigner);
   console.log(`Started Transfer: `, srcTxids);

@@ -14,7 +14,10 @@ import { getStuff } from "./helpers";
   const { signer: toSigner, address: toAddress } = await getStuff(destination);
 
   const token = "native";
-  const amt = normalizeAmount("0.01", origin.config.nativeTokenDecimals);
+  const amt = normalizeAmount(
+    "0.01",
+    BigInt(origin.config.nativeTokenDecimals)
+  );
 
   // Make (manual) a token transfer
   const xfer = await wh.tokenTransfer(
