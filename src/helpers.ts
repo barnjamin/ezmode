@@ -9,7 +9,8 @@ import {
   nativeChainAddress,
 } from "@wormhole-foundation/connect-sdk";
 
-import { getEvmSigner } from "@wormhole-foundation/connect-sdk-evm/src/testing";
+import { testing as evmt } from "@wormhole-foundation/connect-sdk-evm";
+import { testing as solt } from "@wormhole-foundation/connect-sdk-solana";
 
 // read in from `.env`
 require("dotenv").config();
@@ -41,9 +42,15 @@ export async function getStuff(
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await getEvmSigner(
+      signer = await evmt.getEvmSigner(
         await chain.getRpc(),
         getEnv("ETH_PRIVATE_KEY")
+      );
+      break;
+    case "Solana":
+      signer = await solt.getSolanaSigner(
+        await chain.getRpc(),
+        getEnv("SOL_PRIVATE_KEY")
       );
       break;
     default:

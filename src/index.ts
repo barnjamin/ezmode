@@ -3,11 +3,14 @@ import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 import { getStuff } from "./helpers";
 
+import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
+
 (async function () {
   const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
-  const origin = wh.getChain("Avalanche");
-  const destination = wh.getChain("Solana");
+  const origin = wh.getChain("Solana");
+  const destination = wh.getChain("Avalanche");
   // Get signers
 
   const { signer: fromSigner, address: fromAddress } = await getStuff(origin);
