@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "original": "npx tsx src/lookup-original.ts",
-    "wrapped": "npx tsx src/lookup-wrapped.ts",
-    "transfer": "npx tsx src/index.ts",
-    "cctp": "npx tsx src/cctp.ts",
-    "attest": "npx tsx src/attest-all.ts",
-    "vaa":"tsx src/get-vaa.ts",
+    "original": "tsx src/lookupOriginal.ts",
+    "wrapped": "tsx src/lookupWrapped.ts",
+    "transfer": "tsx src/index.ts",
+    "cctp": "tsx src/cctp.ts",
+    "attest": "tsx src/attestAll.ts",
+    "vaa":"tsx src/getVaa.ts",
     "msg":"tsx src/messaging.ts"
   },
   "keywords": [],
