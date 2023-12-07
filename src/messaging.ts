@@ -4,7 +4,6 @@ import {
   signSendWait,
 } from "@wormhole-foundation/connect-sdk";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
-import { SolanaWormholeCore } from "@wormhole-foundation/connect-sdk-solana-core";
 // required to register the protocol
 import "@wormhole-foundation/connect-sdk-solana-core";
 
@@ -13,52 +12,36 @@ import { getStuff } from "./helpers";
 (async function () {
   const wh = new Wormhole("Testnet", [SolanaPlatform]);
 
-  const solChain = wh.getChain("Solana");
-  const { signer, address } = await getStuff(solChain);
+  const chainCtx = wh.getChain("Solana");
+  const coreBridge = await chainCtx.getWormholeCore();
 
-  // todo:  need to add verify msg to core interface
-  const coreBridge = (await solChain.getWormholeCore()) as SolanaWormholeCore<
-    "Testnet",
-    "Solana"
-  >;
+  // Get local signer and parse the address
+  const {
+    signer,
+    address: { address },
+  } = await getStuff(chainCtx);
 
-  const [txid] = await signSendWait(
-    solChain,
-    coreBridge.publishMessage(
-      address.address,
-      encoding.bytes.encode("lol"),
-      0, // nonce
-      0 // consistency (0,1)
-    ),
-    signer
+  // prepare transactions to publish a message
+  const msgTxs = coreBridge.publishMessage(
+    address.toUniversalAddress(),
+    encoding.bytes.encode("lol"),
+    0, // nonce
+    0 // consistency (0,1)
   );
-  //console.log(_txids);
+  // submit post msg txs txs
+  const [txid] = await signSendWait(chainCtx, msgTxs, signer);
 
-  // also possible to search by txid but takes longer to show up
-  // e.g.
-  // const vaa = await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
+  // it is also possible to search by txid but takes longer to show up
+  // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
+  const [whm] = await chainCtx.parseTransaction(txid.txid);
+  const vaa = await wh.getVaa(whm, "Uint8Array");
+  console.log(`VAA payload: '${encoding.bytes.decode(vaa!.payload!)}'`);
 
-  const vaa = await wh.getVaa(
-    (
-      await solChain.parseTransaction(txid.txid)
-    )[0]!,
-    "Uint8Array"
+  // prepare transactions to verify the VAA
+  const verifyTxs = coreBridge.verifyMessage(
+    address.toUniversalAddress(),
+    vaa!
   );
-  if (!vaa) throw "wat";
-
-  console.log(`Verified message: '${encoding.bytes.decode(vaa.payload!)}'`);
-
-  const _postedTxs = await signSendWait(
-    solChain,
-    coreBridge.postVaa(address.address, vaa!),
-    signer
-  );
-  //console.log(_postedTxs);
-
-  const _rePostedTxs = await signSendWait(
-    solChain,
-    coreBridge.postVaa(address.address, vaa!),
-    signer
-  );
-  //console.log(_rePostedTxs);
+  // submit verify txs
+  console.log(await signSendWait(chainCtx, verifyTxs, signer));
 })();
