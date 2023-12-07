@@ -28,6 +28,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
     console.log(url);
     try {
       const vaa = await api.getVaa(url, mainnet_whm, "Uint8Array");
+      console.log(vaa);
       console.log(url, "worked");
     } catch (e) {
       console.log(url, "failed", (e as Error).message);
@@ -51,6 +52,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
     console.log(url);
     try {
       const vaa = await api.getVaa(url, testnet_whm, "Uint8Array");
+      console.log(vaa);
       console.log(url, "worked");
     } catch (e) {
       console.log(url, "failed", (e as Error).message);
