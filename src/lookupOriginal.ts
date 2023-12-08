@@ -10,7 +10,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
   const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
   const chain = "Solana";
-  const token = wh.parseAddress(
+  const token = Wormhole.parseAddress(
     chain,
     "3Ftc5hTz9sG4huk79onufGiebJNDMZNL8HYgdMJ9E7JR"
   );

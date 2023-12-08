@@ -10,13 +10,10 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
   const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
   // The original token we want to find the wrapped version of
-  const originalToken: TokenId = {
-    chain: "Avalanche",
-    address: wh.parseAddress(
-      "Avalanche",
-      "0xd00ae08403b9bbb9124bb305c09058e32c39a48c"
-    ),
-  };
+  const originalToken: TokenId = Wormhole.chainAddress(
+    "Avalanche",
+    "0xd00ae08403b9bbb9124bb305c09058e32c39a48c"
+  );
 
   const chains = ["Solana"] as Chain[];
 
