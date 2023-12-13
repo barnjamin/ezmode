@@ -11,8 +11,8 @@ import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 
   const origin = wh.getChain("Solana");
   const destination = wh.getChain("Avalanche");
-  // Get signers
 
+  // Get signers
   const { signer: fromSigner, address: fromAddress } = await getStuff(origin);
   const { signer: toSigner, address: toAddress } = await getStuff(destination);
 
