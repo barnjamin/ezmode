@@ -6,6 +6,7 @@
   "scripts": {
     "original": "tsx src/lookupOriginal.ts",
     "wrapped": "tsx src/lookupWrapped.ts",
+    "destination": "tsx src/lookupDestination.ts",
     "create": "tsx src/createWrapped.ts",
     "transfer": "tsx src/tokenBridge.ts",
     "cctp": "tsx src/cctp.ts",
