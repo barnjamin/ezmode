@@ -14,14 +14,13 @@ import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
 (async function () {
-  let conf = { ...CONFIG["Testnet"] };
-  conf.chains.Sepolia!.rpc = "https://ethereum-sepolia.publicnode.com";
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform], conf);
+  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
-  // Original chain and address
-  const origin = "Sepolia";
-  const tokenAddress = "0xeef12a83ee5b7161d3873317c8e0e7b76e0b5d9c";
-  const token: TokenId = nativeChainAddress(origin, tokenAddress);
+  // Original Token to Attest
+  const token: TokenId = Wormhole.chainAddress(
+    "Sepolia",
+    "0xeef12a83ee5b7161d3873317c8e0e7b76e0b5d9c"
+  );
 
   // List of chains we want to attest on
   const destinationChains: Chain[] = ["Solana"];
@@ -32,11 +31,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
   // Note: if the VAA is not produced before the attempt to retrieve it times out
   // you should set this value to the txid logged in the previous run
-  // e.g.
-  // let txid = "0xfbc753f45173448c92567b09a4e223b30ff40f0a2d3cc9f11e0377c774d1501c";
-  let txid: string =
-    "0x55127b9c8af46aaeea9ef28d8bf91e1aff920422fc1c9831285eb0f39ddca2fe";
-  // "0x04fbe9a353713d5aae2917144a859f76cb3a15096bcb11adfaca2a1bb8c681d3";
+  let txid = ""; // "0x55127b9c8af46aaeea9ef28d8bf91e1aff920422fc1c9831285eb0f39ddca2fe";
 
   if (txid === "") {
     // create attestation from origin chain, the same VAA
@@ -70,13 +65,13 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
     // grab a ref to the token bridge
     const tb = await destChain.getTokenBridge();
-    // try {
-    //   // try to get the wrapped version, an error here likely means
-    //   // its not been attested
-    //   const wrapped = await tb.getWrappedAsset(token);
-    //   console.log("already wrapped");
-    //   return { chain, wrapped: wrapped.toUniversalAddress().toString() };
-    // } catch (e) {}
+    try {
+      // try to get the wrapped version, an error here likely means
+      // its not been attested
+      const wrapped = await tb.getWrappedAsset(token);
+      console.log("already wrapped");
+      return { chain, address: wrapped };
+    } catch (e) {}
 
     // no wrapped asset, needs to be attested
     console.log("attesting asset");
@@ -94,7 +89,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
     // check again
     const wrapped = await tb.getWrappedAsset(token);
-    return { chain, wrapped: wrapped.toUniversalAddress().toString() };
+    return { chain, address: wrapped };
   });
 
   const results = await Promise.all(resultPromises);

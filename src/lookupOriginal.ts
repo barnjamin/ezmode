@@ -2,17 +2,17 @@ import { Wormhole, nativeChainAddress } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 
-import "@wormhole-foundation/connect-sdk-solana-core";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 
 // For a given _wrapped_ token for a specific chain, look up the original token
 (async function () {
   const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
 
-  const chain = "Solana";
+  const chain = "Ethereum";
   const token = Wormhole.parseAddress(
     chain,
-    "3Ftc5hTz9sG4huk79onufGiebJNDMZNL8HYgdMJ9E7JR"
+    "0x494701CE895389d917a938f0ea202D4eB9684Eab"
   );
 
   console.log(token.unwrap().toString());
