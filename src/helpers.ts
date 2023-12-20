@@ -5,9 +5,10 @@ import {
   Platform,
   PlatformToChains,
   Signer,
+  TokenTransfer,
   TransferState,
   TxHash,
-  WormholeTransfer,
+  Wormhole,
   api,
   nativeChainAddress,
   tasks,
@@ -73,15 +74,15 @@ export async function getStuff<
   };
 }
 
-export async function waitLog(
-  xfer: WormholeTransfer
-): Promise<WormholeTransfer> {
-  console.log("Checking for complete status");
-  while ((await xfer.getTransferState()) < TransferState.Completed) {
-    console.log("Not yet...");
-    await new Promise((f) => setTimeout(f, 5000));
-  }
-  return xfer;
+export async function waitLog(wh: Wormhole<Network>, xfer: TokenTransfer) {
+  const it = TokenTransfer.track(wh, xfer);
+  let res;
+  for (res = await it.next(); !res.done; res = await it.next())
+    console.log(
+      "Current Transfer State: ",
+      TransferState[res.value as TransferState]
+    );
+  return res.value;
 }
 
 // Note: This API may change but it is currently the best place to pull

@@ -8,13 +8,12 @@ Dummy simple demo for the [connect-sdk](https://github.com/wormhole-foundation/c
 ```sh
 git clone git@github.com:barnjamin/ezmode.git
 cd ezmode
-npm i
+yarn
 ```
 
-This installs `@wormhole-foundation/connect-sdk` and 2 platform packages:
+This installs `@wormhole-foundation/connect-sdk` and several platform packages.
 
-- `@wormhole-foundation/connect-sdk-evm` 
-- `@wormhole-foundation/connect-sdk-solana`
+# Signing Transactions
 
 Add keys in a `.env` file like:
 
@@ -25,10 +24,32 @@ ETH_PRIVATE_KEY="BASE_16_PRIVATE_KEY"
 
 # Run it
 
-The program provided executes a simple manual token transfer from Avalanche to Celo.
+Token Transfer
 
 ```sh
-npm run transfer
+yarn transfer
+```
+
+Native USDC Transfer via CCTP
+
+```sh
+yarn cctp
+```
+
+Core messaging example
+
+```sh
+yarn msg
+```
+
+Create a wrapped token
+
+```sh
+yarn create
 ```
 
 
+Get a VAA and parse it
+```sh
+yarn vaa
+```
