@@ -10,7 +10,6 @@ import {
   TxHash,
   Wormhole,
   api,
-  nativeChainAddress,
   tasks,
 } from "@wormhole-foundation/connect-sdk";
 
@@ -70,7 +69,7 @@ export async function getStuff<
   return {
     chain,
     signer: signer as Signer<N, C>,
-    address: nativeChainAddress(chain.chain, signer.address()),
+    address: Wormhole.chainAddress(chain.chain, signer.address()),
   };
 }
 
