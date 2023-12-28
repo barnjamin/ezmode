@@ -11,21 +11,22 @@
     "transfer": "tsx src/tokenBridge.ts",
     "cctp": "tsx src/cctp.ts",
     "vaa":"tsx src/getVaa.ts",
-    "msg":"tsx src/messaging.ts"
+    "msg":"tsx src/messaging.ts",
+    "config":"tsx src/config.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wormhole-foundation/connect-sdk": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-evm": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-evm-tokenbridge": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-evm-core": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-evm-cctp": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-solana": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-solana-core": "^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-solana-tokenbridge":"^0.3.0-beta.5",
-    "@wormhole-foundation/connect-sdk-solana-cctp":"^0.3.0-beta.5",
+    "@wormhole-foundation/connect-sdk": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-evm": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-evm-tokenbridge": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-evm-core": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-evm-cctp": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-solana": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-solana-core": "^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-solana-tokenbridge":"^0.3.0-beta.6",
+    "@wormhole-foundation/connect-sdk-solana-cctp":"^0.3.0-beta.6",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
