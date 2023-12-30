@@ -13,19 +13,25 @@ import { TransferStuff, getStuff, waitLog } from "./helpers";
 // Import the platform specific packages
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+import { AlgorandPlatform } from "@wormhole-foundation/connect-sdk-algorand";
 
 // Register the protocols
 import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
 
 (async function () {
   // init Wormhole object, passing config for which network
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
+  const wh = new Wormhole("Testnet", [
+    EvmPlatform,
+    SolanaPlatform,
+    AlgorandPlatform,
+  ]);
 
   // Grab chain Contexts -- these hold a reference to a cached rpc client
   const sendChain = wh.getChain("Avalanche");
-  const rcvChain = wh.getChain("Solana");
+  const rcvChain = wh.getChain("Algorand");
 
   // shortcut to allow transferring native gas token
   const token: TokenId<"Avalanche"> | "native" = "native";
@@ -41,7 +47,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
   // Note: The Token bridge will dedust past 8 decimals
   // this means any amount specified past that point will be returned
   // to the caller
-  const amount = "0.15";
+  const amount = "0.001";
 
   // With automatic set to true, perform an automatic transfer. This will invoke a relayer
   // contract intermediary that knows to pick up the transfers
@@ -49,7 +55,7 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
   // of the token
   // On the destination side, a wrapped version of the token will be minted
   // to the address specified in the transfer VAA
-  const automatic = true;
+  const automatic = false;
 
   // The automatic relayer has the ability to deliver some native gas funds to the destination account
   // The amount specified for native gas will be swapped for the native gas token according

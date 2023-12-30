@@ -15,6 +15,7 @@ import {
 
 import { testing as et } from "@wormhole-foundation/connect-sdk-evm";
 import { testing as st } from "@wormhole-foundation/connect-sdk-solana";
+import { testing as at } from "@wormhole-foundation/connect-sdk-algorand";
 
 // read in from `.env`
 require("dotenv").config();
@@ -63,6 +64,12 @@ export async function getStuff<
         getEnv("SOL_PRIVATE_KEY")
       );
       break;
+    case "Algorand":
+      signer = await at.getAlgorandSigner(
+        await chain.getRpc(),
+        getEnv("ALGORAND_MNEMONIC")
+      );
+      break;
     default:
       throw new Error("Unrecognized platform: " + platform);
   }
@@ -73,15 +80,20 @@ export async function getStuff<
   };
 }
 
-export async function waitLog(wh: Wormhole<Network>, xfer: TokenTransfer) {
-  const it = TokenTransfer.track(wh, TokenTransfer.getReceipt(xfer));
-  let res;
-  for (res = await it.next(); !res.done; res = await it.next())
+export async function waitLog<N extends Network = Network>(
+  wh: Wormhole<N>,
+  xfer: TokenTransfer<N>,
+  tag: string = "WaitLog"
+) {
+  const tracker = TokenTransfer.track(wh, TokenTransfer.getReceipt(xfer));
+  let receipt;
+  for await (receipt of tracker) {
     console.log(
-      "Current Transfer State: ",
-      TransferState[res.value as TransferState]
+      `${tag}: Current trasfer state: `,
+      TransferState[receipt.state]
     );
-  return res.value;
+  }
+  return receipt;
 }
 
 // Note: This API may change but it is currently the best place to pull
