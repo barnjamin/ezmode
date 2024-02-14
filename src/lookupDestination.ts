@@ -1,4 +1,9 @@
-import { Chain, TokenId, Wormhole } from "@wormhole-foundation/connect-sdk";
+import {
+  Chain,
+  TokenId,
+  Wormhole,
+  canonicalAddress,
+} from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 
@@ -40,7 +45,7 @@ type ResolvedAsset = {
 
   const resultPromises: Promise<ResolvedAsset>[] = addrs.map(async (addr) => {
     // The original token we want to find the wrapped version of
-    let originalToken: TokenId = Wormhole.chainAddress(src, addr);
+    let originalToken: TokenId = Wormhole.tokenId(src, addr);
     try {
       // @ts-ignore
       const _orig = await srcTb.getOriginalAsset(originalToken.address);
@@ -53,6 +58,7 @@ type ResolvedAsset = {
         original: originalToken,
         resolved: {
           chain: dst,
+          // @ts-ignore
           address: originalToken.address.toNative(dst),
         },
       };
@@ -73,6 +79,6 @@ type ResolvedAsset = {
   console.log(results);
   for (const result of results) {
     const { resolved } = result;
-    if (resolved) console.log(resolved.address.unwrap().toString());
+    if (resolved) console.log(canonicalAddress(resolved));
   }
 })();

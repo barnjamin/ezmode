@@ -1,24 +1,23 @@
 import {
   Chain,
   Network,
-  Platform,
   TokenId,
   TokenTransfer,
   Wormhole,
+  amount,
   isTokenId,
-  normalizeAmount,
 } from "@wormhole-foundation/connect-sdk";
 import { TransferStuff, getStuff, waitLog } from "./helpers";
 
 // Import the platform specific packages
+import { AlgorandPlatform } from "@wormhole-foundation/connect-sdk-algorand";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
-import { AlgorandPlatform } from "@wormhole-foundation/connect-sdk-algorand";
 
 // Register the protocols
+import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
 import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
-import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
 
 (async function () {
   // init Wormhole object, passing config for which network
@@ -34,7 +33,7 @@ import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
   const rcvChain = wh.getChain("Algorand");
 
   // shortcut to allow transferring native gas token
-  const token: TokenId<"Avalanche"> | "native" = "native";
+  const token = Wormhole.tokenId(sendChain.chain, "native");
 
   // A TokenId is just a `{chain, address}` pair and an alias for ChainAddress
   // The `address` field must be a parsed address.
@@ -47,7 +46,7 @@ import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
   // Note: The Token bridge will dedust past 8 decimals
   // this means any amount specified past that point will be returned
   // to the caller
-  const amount = "0.001";
+  const amt = "0.001";
 
   // With automatic set to true, perform an automatic transfer. This will invoke a relayer
   // contract intermediary that knows to pick up the transfers
@@ -70,7 +69,7 @@ import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
   // Used to normalize the amount to account for the tokens decimals
   const decimals = isTokenId(token)
     ? await wh.getDecimals(token.chain, token.address)
-    : BigInt(sendChain.config.nativeTokenDecimals);
+    : sendChain.config.nativeTokenDecimals;
 
   // Set this to the transfer txid of the initiating transaction to recover a token transfer
   // and attempt to fetch details about its progress.
@@ -83,14 +82,12 @@ import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
     ? // Perform the token transfer
       await tokenTransfer(wh, {
         token,
-        amount: normalizeAmount(amount, decimals),
+        amount: amount.parse(amt, decimals),
         source,
         destination,
         delivery: {
           automatic,
-          nativeGas: nativeGas
-            ? normalizeAmount(nativeGas, decimals)
-            : undefined,
+          nativeGas: nativeGas ? amount.parse(nativeGas, decimals) : undefined,
         },
       })
     : // Recover the transfer from the originating txid
@@ -107,13 +104,13 @@ import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
 async function tokenTransfer<N extends Network>(
   wh: Wormhole<N>,
   route: {
-    token: TokenId | "native";
-    amount: bigint;
-    source: TransferStuff<N, Platform, Chain>;
-    destination: TransferStuff<N, Platform, Chain>;
+    token: TokenId;
+    amount: amount.Amount;
+    source: TransferStuff<N, Chain>;
+    destination: TransferStuff<N, Chain>;
     delivery?: {
       automatic: boolean;
-      nativeGas?: bigint;
+      nativeGas?: amount.Amount;
     };
     payload?: Uint8Array;
   },
@@ -123,12 +120,14 @@ async function tokenTransfer<N extends Network>(
   // the transfer over time
   const xfer = await wh.tokenTransfer(
     route.token,
-    route.amount,
+    amount.units(route.amount),
     route.source.address,
     route.destination.address,
     route.delivery?.automatic ?? false,
     route.payload,
     route.delivery?.nativeGas
+      ? amount.units(route.delivery?.nativeGas)
+      : undefined
   );
 
   const quote = await TokenTransfer.quoteTransfer(
@@ -166,7 +165,7 @@ async function tokenTransfer<N extends Network>(
   return await tokenTransfer(wh, {
     ...route,
     token: token.token,
-    amount: token.amount,
+    amount: amount.parse(token.amount.toString(), route.amount.decimals),
     source: route.destination,
     destination: route.source,
   });

@@ -1,9 +1,8 @@
 import {
+  Chain,
   ChainAddress,
   ChainContext,
   Network,
-  Platform,
-  PlatformToChains,
   Signer,
   TokenTransfer,
   TransferState,
@@ -13,9 +12,9 @@ import {
   tasks,
 } from "@wormhole-foundation/connect-sdk";
 
-import { testing as et } from "@wormhole-foundation/connect-sdk-evm";
-import { testing as st } from "@wormhole-foundation/connect-sdk-solana";
-import { testing as at } from "@wormhole-foundation/connect-sdk-algorand";
+import { getAlgorandSigner } from "@wormhole-foundation/connect-sdk-algorand";
+import { getEvmSignerForKey } from "@wormhole-foundation/connect-sdk-evm";
+import { getSolanaSigner } from "@wormhole-foundation/connect-sdk-solana";
 
 // read in from `.env`
 require("dotenv").config();
@@ -34,38 +33,32 @@ function getEnv(key: string): string {
   return val;
 }
 
-export interface TransferStuff<
-  N extends Network,
-  P extends Platform,
-  C extends PlatformToChains<P> = PlatformToChains<P>
-> {
-  chain: ChainContext<N, P, C>;
+export interface TransferStuff<N extends Network, C extends Chain> {
+  chain: ChainContext<N, C>;
   signer: Signer<N, C>;
   address: ChainAddress<C>;
 }
 
-export async function getStuff<
-  N extends Network,
-  P extends Platform,
-  C extends PlatformToChains<P>
->(chain: ChainContext<N, P, C>): Promise<TransferStuff<N, P, C>> {
+export async function getStuff<N extends Network, C extends Chain>(
+  chain: ChainContext<N, C>
+): Promise<TransferStuff<N, C>> {
   let signer: Signer;
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await et.getEvmSigner(
+      signer = await getEvmSignerForKey(
         await chain.getRpc(),
         getEnv("ETH_PRIVATE_KEY")
       );
       break;
     case "Solana":
-      signer = await st.getSolanaSigner(
+      signer = await getSolanaSigner(
         await chain.getRpc(),
         getEnv("SOL_PRIVATE_KEY")
       );
       break;
     case "Algorand":
-      signer = await at.getAlgorandSigner(
+      signer = await getAlgorandSigner(
         await chain.getRpc(),
         getEnv("ALGORAND_MNEMONIC")
       );

@@ -2,7 +2,7 @@ import { Chain, TokenId, Wormhole } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 
-import "@wormhole-foundation/connect-sdk-solana-core";
+import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
 // Lookup the Wrapped version of the original token on any chain's Token Bridge
@@ -11,11 +11,11 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
   // The original token we want to find the wrapped version of
   const originalToken: TokenId = Wormhole.chainAddress(
-    "Avalanche",
-    "0xd00ae08403b9bbb9124bb305c09058e32c39a48c"
+    "Bsc",
+    "0xa491db2d115839a7cbc4ee4d976b5f5b1a1d9e5d"
   );
 
-  const chains = ["Solana"] as Chain[];
+  const chains = ["Sepolia"] as Chain[];
 
   // Fire 'em off async
   const resultPromises = chains.map(async (chain) => {

@@ -1,4 +1,4 @@
-import { Wormhole, normalizeAmount } from "@wormhole-foundation/connect-sdk";
+import { Wormhole, amount } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
 import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
 import { getStuff } from "./helpers";
@@ -16,10 +16,9 @@ import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
   const { signer: fromSigner, address: fromAddress } = await getStuff(origin);
   const { signer: toSigner, address: toAddress } = await getStuff(destination);
 
-  const token = "native";
-  const amt = normalizeAmount(
-    "0.01",
-    BigInt(origin.config.nativeTokenDecimals)
+  const token = Wormhole.tokenId(origin.chain, "native");
+  const amt = amount.units(
+    amount.parse("0.01", origin.config.nativeTokenDecimals)
   );
 
   // Make (manual) a token transfer

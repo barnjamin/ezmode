@@ -1,9 +1,7 @@
 import {
-  CONFIG,
   Chain,
   TokenId,
   Wormhole,
-  nativeChainAddress,
   signSendWait,
 } from "@wormhole-foundation/connect-sdk";
 import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
