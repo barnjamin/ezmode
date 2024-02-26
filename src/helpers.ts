@@ -14,7 +14,8 @@ import {
 
 import { getAlgorandSigner } from "@wormhole-foundation/connect-sdk-algorand";
 import { getEvmSignerForKey } from "@wormhole-foundation/connect-sdk-evm";
-import { getSolanaSigner } from "@wormhole-foundation/connect-sdk-solana";
+import { getSolanaSignAndSendSigner } from "@wormhole-foundation/connect-sdk-solana";
+import { getCosmwasmSigner } from "@wormhole-foundation/connect-sdk-cosmwasm";
 
 // read in from `.env`
 require("dotenv").config();
@@ -52,15 +53,24 @@ export async function getStuff<N extends Network, C extends Chain>(
       );
       break;
     case "Solana":
-      signer = await getSolanaSigner(
+      signer = await getSolanaSignAndSendSigner(
         await chain.getRpc(),
-        getEnv("SOL_PRIVATE_KEY")
+        getEnv("SOL_PRIVATE_KEY"),
+        {
+          /* Add options here */
+        }
       );
       break;
     case "Algorand":
       signer = await getAlgorandSigner(
         await chain.getRpc(),
         getEnv("ALGORAND_MNEMONIC")
+      );
+      break;
+    case "Cosmwasm":
+      signer = await getCosmwasmSigner(
+        await chain.getRpc(),
+        getEnv("COSMOS_MNEMONIC")
       );
       break;
     default:
