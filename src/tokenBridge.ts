@@ -131,6 +131,7 @@ async function tokenTransfer<N extends Network>(
   );
 
   const quote = await TokenTransfer.quoteTransfer(
+    wh,
     route.source.chain,
     route.destination.chain,
     xfer.transfer
