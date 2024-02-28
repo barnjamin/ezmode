@@ -5,17 +5,11 @@ import {
   Wormhole,
   amount,
 } from "@wormhole-foundation/sdk";
-
-import { getStuff } from "./helpers";
-
 import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
 import { evm } from "@wormhole-foundation/sdk/evm";
 import { solana } from "@wormhole-foundation/sdk/solana";
 
-import "@wormhole-foundation/connect-sdk-cosmwasm-ibc";
-import "@wormhole-foundation/connect-sdk-cosmwasm-tokenbridge";
-import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
-import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import { getStuff } from "./helpers";
 
 (async function () {
   const wh = new Wormhole("Mainnet", [

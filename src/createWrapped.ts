@@ -6,10 +6,8 @@ import {
 } from "@wormhole-foundation/sdk";
 import { evm } from "@wormhole-foundation/sdk/evm";
 import { solana } from "@wormhole-foundation/sdk/solana";
-import { getStuff } from "./helpers";
 
-import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
-import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import { getStuff } from "./helpers";
 
 (async function () {
   const wh = new Wormhole("Testnet", [evm.Platform, solana.Platform]);
