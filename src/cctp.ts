@@ -6,9 +6,9 @@ import {
   TransactionId,
   Wormhole,
   amount,
-} from "@wormhole-foundation/connect-sdk";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+} from "@wormhole-foundation/sdk";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
 import { TransferStuff, getStuff, waitForRelay } from "./helpers";
 
 import "@wormhole-foundation/connect-sdk-evm-cctp";
@@ -24,7 +24,7 @@ AutoRelayer takes a 0.1usdc fee when xfering to any chain beside goerli, which i
 (async function () {
   // init Wormhole object, passing config for which network
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
+  const wh = new Wormhole("Testnet", [evm.Platform, solana.Platform]);
 
   // Grab chain Contexts
   const sendChain = wh.getChain("Solana");

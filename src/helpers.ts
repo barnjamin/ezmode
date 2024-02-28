@@ -10,12 +10,12 @@ import {
   Wormhole,
   api,
   tasks,
-} from "@wormhole-foundation/connect-sdk";
+} from "@wormhole-foundation/sdk";
 
-import { getAlgorandSigner } from "@wormhole-foundation/connect-sdk-algorand";
-import { getEvmSignerForKey } from "@wormhole-foundation/connect-sdk-evm";
-import { getSolanaSignAndSendSigner } from "@wormhole-foundation/connect-sdk-solana";
-import { getCosmwasmSigner } from "@wormhole-foundation/connect-sdk-cosmwasm";
+import { algorand } from "@wormhole-foundation/sdk/algorand";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
+import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
 
 // read in from `.env`
 require("dotenv").config();
@@ -47,13 +47,13 @@ export async function getStuff<N extends Network, C extends Chain>(
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await getEvmSignerForKey(
+      signer = await evm.getEvmSignerForKey(
         await chain.getRpc(),
         getEnv("ETH_PRIVATE_KEY")
       );
       break;
     case "Solana":
-      signer = await getSolanaSignAndSendSigner(
+      signer = await solana.getSolanaSignAndSendSigner(
         await chain.getRpc(),
         getEnv("SOL_PRIVATE_KEY"),
         {
@@ -62,13 +62,13 @@ export async function getStuff<N extends Network, C extends Chain>(
       );
       break;
     case "Algorand":
-      signer = await getAlgorandSigner(
+      signer = await algorand.getAlgorandSigner(
         await chain.getRpc(),
         getEnv("ALGORAND_MNEMONIC")
       );
       break;
     case "Cosmwasm":
-      signer = await getCosmwasmSigner(
+      signer = await cosmwasm.getCosmwasmSigner(
         await chain.getRpc(),
         getEnv("COSMOS_MNEMONIC")
       );

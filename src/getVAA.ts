@@ -3,10 +3,7 @@ import {
   Wormhole,
   WormholeMessageId,
   api,
-} from "@wormhole-foundation/connect-sdk";
-
-import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
-import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+} from "@wormhole-foundation/sdk";
 
 (async function () {
   const whm: WormholeMessageId = {

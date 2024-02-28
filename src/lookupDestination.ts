@@ -3,9 +3,9 @@ import {
   TokenId,
   Wormhole,
   canonicalAddress,
-} from "@wormhole-foundation/connect-sdk";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+} from "@wormhole-foundation/sdk";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
 
 import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
@@ -18,7 +18,7 @@ type ResolvedAsset = {
 
 // Lookup the Wrapped version of the original token on any chain's Token Bridge
 (async function () {
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
+  const wh = new Wormhole("Testnet", [evm.Platform, solana.Platform]);
 
   const src: Chain = "Ethereum";
   const dst: Chain = "Solana";

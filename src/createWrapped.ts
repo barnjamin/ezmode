@@ -3,16 +3,16 @@ import {
   TokenId,
   Wormhole,
   signSendWait,
-} from "@wormhole-foundation/connect-sdk";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+} from "@wormhole-foundation/sdk";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
 import { getStuff } from "./helpers";
 
 import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
 import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
 (async function () {
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
+  const wh = new Wormhole("Testnet", [evm.Platform, solana.Platform]);
 
   // Original Token to Attest
   const token: TokenId = Wormhole.chainAddress(

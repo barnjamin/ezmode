@@ -1,10 +1,10 @@
-import { Wormhole } from "@wormhole-foundation/connect-sdk";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
+import { Wormhole } from "@wormhole-foundation/sdk";
+import { evm } from "@wormhole-foundation/sdk/evm";
 
 (async function () {
   // Pass a partial WormholeConfig object to override specific
   // fields in the default config
-  const wh = new Wormhole("Testnet", [EvmPlatform], {
+  const wh = new Wormhole("Testnet", [evm.Platform], {
     chains: {
       Ethereum: {
         // rando Goerli rpc from chain list

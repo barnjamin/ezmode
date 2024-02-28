@@ -19,22 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wormhole-foundation/connect-sdk": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-algorand": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-algorand-core": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-algorand-tokenbridge": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-cosmwasm": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-cosmwasm-core": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-cosmwasm-ibc": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-cosmwasm-tokenbridge": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-evm": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-evm-cctp": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-evm-core": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-evm-tokenbridge": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-solana": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-solana-cctp": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-solana-core": "0.4.4-beta.1",
-    "@wormhole-foundation/connect-sdk-solana-tokenbridge": "0.4.4-beta.1"
+    "@wormhole-foundation/sdk": "0.5.0-beta.0"
   },
   "devDependencies": {
     "@types/node": "^20.4.8",

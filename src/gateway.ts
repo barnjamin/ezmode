@@ -4,14 +4,13 @@ import {
   TokenId,
   Wormhole,
   amount,
-} from "@wormhole-foundation/connect-sdk";
+} from "@wormhole-foundation/sdk";
 
 import { getStuff } from "./helpers";
 
-// Import the platform specific packages
-import { CosmwasmPlatform } from "@wormhole-foundation/connect-sdk-cosmwasm";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
 
 import "@wormhole-foundation/connect-sdk-cosmwasm-ibc";
 import "@wormhole-foundation/connect-sdk-cosmwasm-tokenbridge";
@@ -20,9 +19,9 @@ import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
 
 (async function () {
   const wh = new Wormhole("Mainnet", [
-    EvmPlatform,
-    SolanaPlatform,
-    CosmwasmPlatform,
+    evm.Platform,
+    solana.Platform,
+    cosmwasm.Platform,
   ]);
 
   // Grab chain Contexts for each leg of our journey

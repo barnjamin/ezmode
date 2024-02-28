@@ -6,26 +6,21 @@ import {
   Wormhole,
   amount,
   isTokenId,
-} from "@wormhole-foundation/connect-sdk";
+} from "@wormhole-foundation/sdk";
 import { TransferStuff, getStuff, waitLog } from "./helpers";
 
 // Import the platform specific packages
-import { AlgorandPlatform } from "@wormhole-foundation/connect-sdk-algorand";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
-
-// Register the protocols
-import "@wormhole-foundation/connect-sdk-algorand-tokenbridge";
-import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
-import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
+import { algorand } from "@wormhole-foundation/sdk/algorand";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
 
 (async function () {
   // init Wormhole object, passing config for which network
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
   const wh = new Wormhole("Testnet", [
-    EvmPlatform,
-    SolanaPlatform,
-    AlgorandPlatform,
+    evm.Platform,
+    solana.Platform,
+    algorand.Platform,
   ]);
 
   // Grab chain Contexts -- these hold a reference to a cached rpc client

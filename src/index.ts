@@ -1,13 +1,11 @@
-import { Wormhole, amount } from "@wormhole-foundation/connect-sdk";
-import { EvmPlatform } from "@wormhole-foundation/connect-sdk-evm";
-import { SolanaPlatform } from "@wormhole-foundation/connect-sdk-solana";
+import { Wormhole, amount } from "@wormhole-foundation/sdk";
+import { evm } from "@wormhole-foundation/sdk/evm";
+import { solana } from "@wormhole-foundation/sdk/solana";
+
 import { getStuff } from "./helpers";
 
-import "@wormhole-foundation/connect-sdk-solana-tokenbridge";
-import "@wormhole-foundation/connect-sdk-evm-tokenbridge";
-
 (async function () {
-  const wh = new Wormhole("Testnet", [EvmPlatform, SolanaPlatform]);
+  const wh = new Wormhole("Testnet", [evm.Platform, solana.Platform]);
 
   const origin = wh.getChain("Solana");
   const destination = wh.getChain("Avalanche");
