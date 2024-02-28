@@ -47,13 +47,13 @@ export async function getStuff<N extends Network, C extends Chain>(
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await evm.getEvmSignerForKey(
+      signer = await evm.getSigner(
         await chain.getRpc(),
         getEnv("ETH_PRIVATE_KEY")
       );
       break;
     case "Solana":
-      signer = await solana.getSolanaSignAndSendSigner(
+      signer = await solana.getSigner(
         await chain.getRpc(),
         getEnv("SOL_PRIVATE_KEY"),
         {
@@ -62,13 +62,13 @@ export async function getStuff<N extends Network, C extends Chain>(
       );
       break;
     case "Algorand":
-      signer = await algorand.getAlgorandSigner(
+      signer = await algorand.getSigner(
         await chain.getRpc(),
         getEnv("ALGORAND_MNEMONIC")
       );
       break;
     case "Cosmwasm":
-      signer = await cosmwasm.getCosmwasmSigner(
+      signer = await cosmwasm.getSigner(
         await chain.getRpc(),
         getEnv("COSMOS_MNEMONIC")
       );
