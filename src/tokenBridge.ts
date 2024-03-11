@@ -6,6 +6,7 @@ import {
   Wormhole,
   amount,
   isTokenId,
+  wormhole,
 } from "@wormhole-foundation/sdk";
 import { TransferStuff, getStuff, waitLog } from "./helpers";
 
@@ -17,11 +18,7 @@ import { solana } from "@wormhole-foundation/sdk/solana";
 (async function () {
   // init Wormhole object, passing config for which network
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
-  const wh = new Wormhole("Testnet", [
-    evm.Platform,
-    solana.Platform,
-    algorand.Platform,
-  ]);
+  const wh = await wormhole("Testnet", [evm, solana, algorand]);
 
   // Grab chain Contexts -- these hold a reference to a cached rpc client
   const sendChain = wh.getChain("Avalanche");

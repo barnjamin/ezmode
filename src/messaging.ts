@@ -1,10 +1,15 @@
-import { Wormhole, encoding, signSendWait } from "@wormhole-foundation/sdk";
+import {
+  Wormhole,
+  encoding,
+  signSendWait,
+  wormhole,
+} from "@wormhole-foundation/sdk";
 import { solana } from "@wormhole-foundation/sdk/solana";
 
 import { getStuff } from "./helpers";
 
 (async function () {
-  const wh = new Wormhole("Testnet", [solana.Platform]);
+  const wh = await wormhole("Testnet", [solana]);
 
   const chainCtx = wh.getChain("Solana");
   const coreBridge = await chainCtx.getWormholeCore();

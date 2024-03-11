@@ -4,6 +4,7 @@ import {
   TokenId,
   Wormhole,
   amount,
+  wormhole,
 } from "@wormhole-foundation/sdk";
 import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
 import { evm } from "@wormhole-foundation/sdk/evm";
@@ -12,15 +13,11 @@ import { solana } from "@wormhole-foundation/sdk/solana";
 import { getStuff } from "./helpers";
 
 (async function () {
-  const wh = new Wormhole("Mainnet", [
-    evm.Platform,
-    solana.Platform,
-    cosmwasm.Platform,
-  ]);
+  const wh = await wormhole("Mainnet", [evm, solana, cosmwasm]);
 
   // Grab chain Contexts for each leg of our journey
-  const srcCtx = wh.getChain("Solana");
-  const dstCtx = wh.getChain("Dymension");
+  const srcCtx = wh.getChain("Dymension");
+  const dstCtx = wh.getChain("Solana");
 
   // Get signer from local key but anything that implements
   // Signer interface (e.g. wrapper around web wallet) should work
@@ -34,7 +31,7 @@ import { getStuff } from "./helpers";
   );
 
   console.log(
-    `Beginning transfer into Cosmos from ${
+    `Beginning transfer out of cosmos from ${
       srcCtx.chain
     }:${srcStuff.address.address.toString()} to ${
       dstStuff.chain.chain

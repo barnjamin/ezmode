@@ -1,15 +1,11 @@
-import { Chain, TokenId, Wormhole } from "@wormhole-foundation/sdk";
+import { Chain, TokenId, Wormhole, wormhole } from "@wormhole-foundation/sdk";
 import { evm } from "@wormhole-foundation/sdk/evm";
 import { solana } from "@wormhole-foundation/sdk/solana";
 import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
 
 // Lookup the Wrapped version of the original token on any chain's Token Bridge
 (async function () {
-  const wh = new Wormhole("Mainnet", [
-    evm.Platform,
-    solana.Platform,
-    cosmwasm.Platform,
-  ]);
+  const wh = await wormhole("Mainnet", [evm, solana, cosmwasm]);
 
   // The original token we want to find the wrapped version of
   const originalToken: TokenId = Wormhole.chainAddress(
