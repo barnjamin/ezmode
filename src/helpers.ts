@@ -47,31 +47,29 @@ export async function getStuff<N extends Network, C extends Chain>(
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await evm.getSigner(
-        await chain.getRpc(),
-        getEnv("ETH_PRIVATE_KEY")
-      );
+      signer = await (
+        await evm()
+      ).getSigner(await chain.getRpc(), getEnv("ETH_PRIVATE_KEY"));
       break;
     case "Solana":
-      signer = await solana.getSigner(
-        await chain.getRpc(),
-        getEnv("SOL_PRIVATE_KEY"),
-        {
-          /* Add options here */
-        }
-      );
+      signer = await (
+        await solana()
+      ).getSigner(await chain.getRpc(), getEnv("SOL_PRIVATE_KEY"), {
+        // TODO: fix typing
+        // for now see available options in the sdks platforms/solana/signer.ts
+        computeLimit: 500_000n,
+        priorityFeeAmount: 100_000n,
+      });
       break;
     case "Algorand":
-      signer = await algorand.getSigner(
-        await chain.getRpc(),
-        getEnv("ALGORAND_MNEMONIC")
-      );
+      signer = await (
+        await algorand()
+      ).getSigner(await chain.getRpc(), getEnv("ALGORAND_MNEMONIC"));
       break;
     case "Cosmwasm":
-      signer = await cosmwasm.getSigner(
-        await chain.getRpc(),
-        getEnv("COSMOS_MNEMONIC")
-      );
+      signer = await (
+        await cosmwasm()
+      ).getSigner(await chain.getRpc(), getEnv("COSMOS_MNEMONIC"));
       break;
     default:
       throw new Error("Unrecognized platform: " + platform);
