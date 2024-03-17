@@ -1,19 +1,20 @@
 import { Chain, TokenId, Wormhole, wormhole } from "@wormhole-foundation/sdk";
-import { evm } from "@wormhole-foundation/sdk/evm";
-import { solana } from "@wormhole-foundation/sdk/solana";
-import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
+import evm from "@wormhole-foundation/sdk/evm";
+import solana from "@wormhole-foundation/sdk/solana";
+import cosmwasm from "@wormhole-foundation/sdk/cosmwasm";
+import sui from "@wormhole-foundation/sdk/sui";
 
 // Lookup the Wrapped version of the original token on any chain's Token Bridge
 (async function () {
-  const wh = await wormhole("Mainnet", [evm, solana, cosmwasm]);
+  const wh = await wormhole("Mainnet", [evm, solana, cosmwasm, sui]);
 
   // The original token we want to find the wrapped version of
   const originalToken: TokenId = Wormhole.chainAddress(
     "Solana",
-    "6gnCPhXtLnUD76HjQuSYPENLSZdG8RvDB1pTLM5aLSJA"
+    "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
   );
 
-  const chains = ["Wormchain"] as Chain[];
+  const chains = ["Sui"] as Chain[];
 
   // Fire 'em off async
   const resultPromises = chains.map(async (chain) => {
@@ -29,4 +30,10 @@ import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
 
   const results = await Promise.all(resultPromises);
   console.log(results);
+  const [t] = results;
+
+  const d = await wh
+    .getChain("Sui")
+    .getDecimals(Wormhole.parseAddress("Sui", t!.wrapped! as string));
+  console.log(d);
 })();

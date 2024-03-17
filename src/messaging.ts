@@ -4,7 +4,7 @@ import {
   signSendWait,
   wormhole,
 } from "@wormhole-foundation/sdk";
-import { solana } from "@wormhole-foundation/sdk/solana";
+import solana  from "@wormhole-foundation/sdk/solana";
 
 import { getStuff } from "./helpers";
 

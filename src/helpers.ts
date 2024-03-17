@@ -12,13 +12,10 @@ import {
   tasks,
 } from "@wormhole-foundation/sdk";
 
-import { algorand } from "@wormhole-foundation/sdk/algorand";
-import { evm } from "@wormhole-foundation/sdk/evm";
-import { solana } from "@wormhole-foundation/sdk/solana";
-import { cosmwasm } from "@wormhole-foundation/sdk/cosmwasm";
-
-// read in from `.env`
-require("dotenv").config();
+import  algorand  from "@wormhole-foundation/sdk/algorand";
+import  evm  from "@wormhole-foundation/sdk/evm";
+import  solana  from "@wormhole-foundation/sdk/solana";
+import  cosmwasm  from "@wormhole-foundation/sdk/cosmwasm";
 
 function getEnv(key: string): string {
   // If we're in the browser, return empty string
@@ -43,6 +40,8 @@ export interface TransferStuff<N extends Network, C extends Chain> {
 export async function getStuff<N extends Network, C extends Chain>(
   chain: ChainContext<N, C>
 ): Promise<TransferStuff<N, C>> {
+  // read in from `.env`
+  (await import("dotenv")).config();
   let signer: Signer;
   const platform = chain.platform.utils()._platform;
   switch (platform) {

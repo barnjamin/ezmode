@@ -1,5 +1,5 @@
 import { wormhole } from "@wormhole-foundation/sdk";
-import { evm } from "@wormhole-foundation/sdk/evm";
+import evm from "@wormhole-foundation/sdk/evm";
 
 (async function () {
   // Pass a partial WormholeConfig object to override specific

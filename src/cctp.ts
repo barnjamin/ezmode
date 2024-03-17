@@ -8,8 +8,8 @@ import {
   amount,
   wormhole,
 } from "@wormhole-foundation/sdk";
-import { evm } from "@wormhole-foundation/sdk/evm";
-import { solana } from "@wormhole-foundation/sdk/solana";
+import evm from "@wormhole-foundation/sdk/evm";
+import solana from "@wormhole-foundation/sdk/solana";
 
 import { TransferStuff, getStuff, waitForRelay } from "./helpers";
 

@@ -11,9 +11,9 @@ import {
 import { TransferStuff, getStuff, waitLog } from "./helpers";
 
 // Import the platform specific packages
-import { algorand } from "@wormhole-foundation/sdk/algorand";
-import { evm } from "@wormhole-foundation/sdk/evm";
-import { solana } from "@wormhole-foundation/sdk/solana";
+import algorand from "@wormhole-foundation/sdk/algorand";
+import evm from "@wormhole-foundation/sdk/evm";
+import solana from "@wormhole-foundation/sdk/solana";
 
 (async function () {
   // init Wormhole object, passing config for which network
