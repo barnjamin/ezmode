@@ -8,7 +8,7 @@ import {
   isTokenId,
   wormhole,
 } from "@wormhole-foundation/sdk";
-import { TransferStuff, getStuff, waitLog } from "./helpers";
+import { TransferStuff, getStuff, waitLog } from "./helpers.js";
 
 // Import the platform specific packages
 import algorand from "@wormhole-foundation/sdk/algorand";
@@ -18,11 +18,11 @@ import solana from "@wormhole-foundation/sdk/solana";
 (async function () {
   // init Wormhole object, passing config for which network
   // to use (e.g. Mainnet/Testnet) and what Platforms to support
-  const wh = await wormhole("Testnet", [evm, solana, algorand]);
+  const wh = await wormhole("Mainnet", [evm, solana, algorand]);
 
   // Grab chain Contexts -- these hold a reference to a cached rpc client
   const sendChain = wh.getChain("Avalanche");
-  const rcvChain = wh.getChain("Algorand");
+  const rcvChain = wh.getChain("Solana");
 
   // shortcut to allow transferring native gas token
   const token = Wormhole.tokenId(sendChain.chain, "native");

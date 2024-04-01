@@ -4,9 +4,9 @@ import {
   signSendWait,
   wormhole,
 } from "@wormhole-foundation/sdk";
-import solana  from "@wormhole-foundation/sdk/solana";
+import solana from "@wormhole-foundation/sdk/solana";
 
-import { getStuff } from "./helpers";
+import { getStuff } from "./helpers.js";
 
 (async function () {
   const wh = await wormhole("Testnet", [solana]);

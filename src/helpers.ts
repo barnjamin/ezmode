@@ -12,10 +12,10 @@ import {
   tasks,
 } from "@wormhole-foundation/sdk";
 
-import  algorand  from "@wormhole-foundation/sdk/algorand";
-import  evm  from "@wormhole-foundation/sdk/evm";
-import  solana  from "@wormhole-foundation/sdk/solana";
-import  cosmwasm  from "@wormhole-foundation/sdk/cosmwasm";
+import algorand from "@wormhole-foundation/sdk/platforms/algorand";
+import cosmwasm from "@wormhole-foundation/sdk/platforms/cosmwasm";
+import evm from "@wormhole-foundation/sdk/platforms/evm";
+import solana from "@wormhole-foundation/sdk/platforms/solana";
 
 function getEnv(key: string): string {
   // If we're in the browser, return empty string
@@ -46,29 +46,31 @@ export async function getStuff<N extends Network, C extends Chain>(
   const platform = chain.platform.utils()._platform;
   switch (platform) {
     case "Evm":
-      signer = await (
-        await evm()
-      ).getSigner(await chain.getRpc(), getEnv("ETH_PRIVATE_KEY"));
+      signer = await evm.getSigner(
+        await chain.getRpc(),
+        getEnv("ETH_PRIVATE_KEY")
+      );
       break;
     case "Solana":
-      signer = await (
-        await solana()
-      ).getSigner(await chain.getRpc(), getEnv("SOL_PRIVATE_KEY"), {
-        // TODO: fix typing
-        // for now see available options in the sdks platforms/solana/signer.ts
-        computeLimit: 500_000n,
-        priorityFeeAmount: 100_000n,
-      });
+      signer = await solana.getSigner(
+        await chain.getRpc(),
+        getEnv("SOL_PRIVATE_KEY"),
+        {
+          priorityFeePercentile: 0.9,
+        }
+      );
       break;
     case "Algorand":
-      signer = await (
-        await algorand()
-      ).getSigner(await chain.getRpc(), getEnv("ALGORAND_MNEMONIC"));
+      signer = await algorand.getSigner(
+        await chain.getRpc(),
+        getEnv("ALGORAND_MNEMONIC")
+      );
       break;
     case "Cosmwasm":
-      signer = await (
-        await cosmwasm()
-      ).getSigner(await chain.getRpc(), getEnv("COSMOS_MNEMONIC"));
+      signer = await cosmwasm.getSigner(
+        await chain.getRpc(),
+        getEnv("COSMOS_MNEMONIC")
+      );
       break;
     default:
       throw new Error("Unrecognized platform: " + platform);
