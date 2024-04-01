@@ -4,12 +4,12 @@ import solana from "@wormhole-foundation/sdk/solana";
 
 // For a given _wrapped_ token for a specific chain, look up the original token
 (async function () {
-  const wh = await wormhole("Testnet", [evm, solana]);
+  const wh = await wormhole("Mainnet", [evm, solana]);
 
-  const chain = "Ethereum";
+  const chain = "Solana";
   const token = Wormhole.parseAddress(
     chain,
-    "0x494701CE895389d917a938f0ea202D4eB9684Eab"
+    "7hdeo5QciUF8S2vfsx6uRJkdNVADBU3DDcXW4zjDcMin"
   );
 
   const tb = await wh.getChain(chain).getTokenBridge();
