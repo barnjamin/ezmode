@@ -1,8 +1,8 @@
 import { Wormhole, amount, wormhole } from "@wormhole-foundation/sdk";
-import  evm  from "@wormhole-foundation/sdk/evm";
-import  solana  from "@wormhole-foundation/sdk/solana";
+import evm from "@wormhole-foundation/sdk/evm";
+import solana from "@wormhole-foundation/sdk/solana";
 
-import { getStuff } from "./helpers";
+import { getStuff } from "./helpers.js";
 
 (async function () {
   const wh = await wormhole("Testnet", [evm, solana]);
