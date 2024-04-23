@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@solana/web3.js": "1.91.1",
-    "@wormhole-foundation/sdk": "0.5.3-beta.7"
+    "@wormhole-foundation/sdk": "0.5.3"
   },
   "devDependencies": {
     "@types/node": "^20.4.8",
