@@ -56,7 +56,17 @@ export async function getStuff<N extends Network, C extends Chain>(
         await chain.getRpc(),
         getEnv("SOL_PRIVATE_KEY"),
         {
-          priorityFeePercentile: 0.9,
+          debug: true,
+          priorityFee: {
+            // take the middle priority fee
+            percentile: 0.5,
+            // juice the base fee taken from priority fee percentile
+            percentileMultiple: 2,
+            // at least 1 lamport/compute unit
+            min: 1,
+            // at most 1000 lamport/compute unit
+            max: 1000,
+          },
         }
       );
       break;
