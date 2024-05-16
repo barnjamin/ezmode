@@ -14,7 +14,8 @@
     "vaa": "tsx src/getVAA.ts",
     "msg": "tsx src/messaging.ts",
     "config": "tsx src/config.ts",
-    "gateway": "tsx src/gateway.ts"
+    "gateway": "tsx src/gateway.ts",
+    "router":"tsx src/router.ts"
   },
   "keywords": [],
   "author": "",
