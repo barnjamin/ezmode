@@ -1,3 +1,4 @@
+import { PublicKey, Transaction } from "@solana/web3.js";
 import {
   Chain,
   Network,
@@ -5,7 +6,10 @@ import {
   UnsignedTransaction,
   encoding,
 } from "@wormhole-foundation/sdk";
-import { SolanaUnsignedTransaction } from "@wormhole-foundation/sdk-solana";
+import {
+  isVersionedTransaction,
+  SolanaUnsignedTransaction,
+} from "@wormhole-foundation/sdk-solana";
 import { SolanaLedgerSigner as LedgerSigner } from "@xlabs-xyz/ledger-signer-solana";
 
 export class SolanaLedgerSigner<N extends Network, C extends Chain>
@@ -27,19 +31,35 @@ export class SolanaLedgerSigner<N extends Network, C extends Chain>
 
   async sign(txs: UnsignedTransaction<N, C>[]): Promise<any[]> {
     const signed = [];
+
+    // TODO: need recent blockhash fetched from the network
+
     for (const tx of txs) {
-      const { transaction } = tx as SolanaUnsignedTransaction<N, "Solana">;
-      signed.push(
-        await this._signer.signTransaction(
-          Buffer.from(transaction.transaction.serialize())
+      const {
+        transaction: { transaction, signers },
+      } = tx as SolanaUnsignedTransaction<N, "Solana">;
+
+      const signature = await this._signer.signTransaction(
+        Buffer.from(
+          transaction.serialize({
+            requireAllSignatures: false,
+            verifySignatures: false,
+          })
         )
       );
+      transaction.addSignature(new PublicKey(this.address()), signature);
 
-      if (transaction.signers && transaction.signers.length > 0) {
-        // TODO: other signers?
-        throw "Unhandled";
+      if (signers && signers.length > 0) {
+        if (isVersionedTransaction(transaction)) {
+          transaction.sign(signers);
+        } else {
+          transaction.partialSign(...signers);
+        }
       }
+
+      signed.push(transaction.serialize());
     }
+
     return signed;
   }
 
