@@ -15,14 +15,16 @@
     "msg": "tsx src/messaging.ts",
     "config": "tsx src/config.ts",
     "gateway": "tsx src/gateway.ts",
-    "router":"tsx src/router.ts"
+    "router": "tsx src/router.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@solana/web3.js": "1.91.7",
-    "@wormhole-foundation/sdk": "0.7.0-beta.0"
+    "@wormhole-foundation/sdk": "0.7.0-beta.0",
+    "@xlabs-xyz/ledger-signer-ethers-v6": "^0.0.1",
+    "@xlabs-xyz/ledger-signer-solana": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.4.8",
