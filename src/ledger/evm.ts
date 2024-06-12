@@ -29,12 +29,40 @@ export class EvmLedgerSinger<N extends Network, C extends Chain>
 
   async sign(txs: UnsignedTransaction<N, C>[]): Promise<any[]> {
     const signed = [];
+
+    // Default gas values
+    let gasLimit = 500_000n;
+    let gasPrice = 100_000_000_000n; // 100gwei
+    let maxFeePerGas = 1_500_000_000n; // 1.5gwei
+    let maxPriorityFeePerGas = 100_000_000n; // 0.1gwei
+
+    // If no overrides were passed, we can get better
+    // gas values from the provider
+    // Celo does not support this call
+    if (this._chain !== "Celo") {
+      const feeData = await this._signer.provider!.getFeeData();
+      console.log(feeData);
+      gasPrice = feeData.gasPrice ?? gasPrice;
+      maxFeePerGas = feeData.maxFeePerGas ?? maxFeePerGas;
+      maxPriorityFeePerGas =
+        feeData.maxPriorityFeePerGas ?? maxPriorityFeePerGas;
+    }
+
+    // Oasis throws malformed errors unless we
+    // set it to use legacy transaction parameters
+    const gasOpts =
+      this._chain === "Oasis"
+        ? { gasLimit, gasPrice, type: 0 } // Hardcoded to legacy transaction type
+        : { gasLimit, maxFeePerGas, maxPriorityFeePerGas };
+
     for (const tx of txs) {
       const t: TransactionRequest = {
         ...tx.transaction,
-        from: this.address(),
         nonce: await this._signer.getNonce(),
+        ...gasOpts,
       };
+      // Ledger pukes on this
+      delete t.from;
       signed.push(await this._signer.signTransaction(t));
     }
     return signed;

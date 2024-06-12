@@ -5,13 +5,14 @@ import {
   wormhole,
 } from "@wormhole-foundation/sdk";
 import solana from "@wormhole-foundation/sdk/solana";
+import evm from "@wormhole-foundation/sdk/evm";
 
 import { getStuff } from "./helpers.js";
 
 (async function () {
-  const wh = await wormhole("Testnet", [solana]);
+  const wh = await wormhole("Testnet", [solana, evm]);
 
-  const chainCtx = wh.getChain("Solana");
+  const chainCtx = wh.getChain("Sepolia");
   const coreBridge = await chainCtx.getWormholeCore();
 
   // Get local signer and parse the address

@@ -27,11 +27,8 @@ export class SolanaLedgerSigner<N extends Network, C extends Chain>
     connection: Connection,
     path: string
   ): Promise<SolanaLedgerSigner<Network, C>> {
-    console.log(path);
     const signer = await LedgerSigner.create(path);
-    console.log(signer);
     const address = encoding.b58.encode(await signer.getAddress());
-    console.log(address);
     return new SolanaLedgerSigner(connection, signer, address, chain);
   }
 
