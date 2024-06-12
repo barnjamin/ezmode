@@ -4,7 +4,7 @@ import {
   SignOnlySigner,
   UnsignedTransaction,
 } from "@wormhole-foundation/sdk";
-import { TransactionRequest } from "ethers";
+import { TransactionRequest, Provider } from "ethers";
 import { LedgerSigner } from "@xlabs-xyz/ledger-signer-ethers-v6";
 
 export class EvmLedgerSinger<N extends Network, C extends Chain>
@@ -15,6 +15,17 @@ export class EvmLedgerSinger<N extends Network, C extends Chain>
     private _address: string,
     private _chain: C
   ) {}
+
+  static async fromPath<C extends Chain>(
+    chain: C,
+    provider: Provider,
+    path?: string
+  ): Promise<EvmLedgerSinger<Network, C>> {
+    // @ts-ignore
+    const signer = await LedgerSigner.create(provider, path);
+    const address = await signer.getAddress();
+    return new EvmLedgerSinger(signer, address, chain);
+  }
 
   async sign(txs: UnsignedTransaction<N, C>[]): Promise<any[]> {
     const signed = [];

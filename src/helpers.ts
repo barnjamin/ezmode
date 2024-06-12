@@ -16,6 +16,18 @@ import algorand from "@wormhole-foundation/sdk/platforms/algorand";
 import cosmwasm from "@wormhole-foundation/sdk/platforms/cosmwasm";
 import evm from "@wormhole-foundation/sdk/platforms/evm";
 import solana from "@wormhole-foundation/sdk/platforms/solana";
+import { EvmLedgerSinger } from "./ledger/evm.js";
+import { SolanaLedgerSigner } from "./ledger/solana.js";
+
+function tryGetEnv(key: string): string | null {
+  try {
+    const val = getEnv(key);
+    if (val === "") return null;
+    return val;
+  } catch {
+    return null;
+  }
+}
 
 function getEnv(key: string): string {
   // If we're in the browser, return empty string
@@ -44,31 +56,49 @@ export async function getStuff<N extends Network, C extends Chain>(
   (await import("dotenv")).config();
   let signer: Signer;
   const platform = chain.platform.utils()._platform;
+
   switch (platform) {
     case "Evm":
-      signer = await evm.getSigner(
-        await chain.getRpc(),
-        getEnv("ETH_PRIVATE_KEY")
-      );
+      if (tryGetEnv("EVM_LEDGER_PATH")) {
+        signer = await EvmLedgerSinger.fromPath(
+          chain.chain,
+          await chain.getRpc(),
+          getEnv("EVM_LEDGER_PATH")
+        );
+      } else {
+        signer = await evm.getSigner(
+          await chain.getRpc(),
+          getEnv("ETH_PRIVATE_KEY")
+        );
+      }
+
       break;
     case "Solana":
-      signer = await solana.getSigner(
-        await chain.getRpc(),
-        getEnv("SOL_PRIVATE_KEY"),
-        {
-          debug: true,
-          priorityFee: {
-            // take the middle priority fee
-            percentile: 0.5,
-            // juice the base fee taken from priority fee percentile
-            percentileMultiple: 2,
-            // at least 1 lamport/compute unit
-            min: 1,
-            // at most 1000 lamport/compute unit
-            max: 1000,
-          },
-        }
-      );
+      if (tryGetEnv("SOL_LEDGER_PATH")) {
+        signer = await SolanaLedgerSigner.fromPath(
+          chain.chain,
+          await chain.getRpc(),
+          getEnv("SOL_LEDGER_PATH")
+        );
+      } else {
+        signer = await solana.getSigner(
+          await chain.getRpc(),
+          getEnv("SOL_PRIVATE_KEY"),
+          {
+            debug: true,
+            priorityFee: {
+              // take the middle priority fee
+              percentile: 0.5,
+              // juice the base fee taken from priority fee percentile
+              percentileMultiple: 2,
+              // at least 1 lamport/compute unit
+              min: 1,
+              // at most 1000 lamport/compute unit
+              max: 1000,
+            },
+          }
+        );
+      }
       break;
     case "Algorand":
       signer = await algorand.getSigner(
