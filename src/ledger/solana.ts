@@ -27,8 +27,11 @@ export class SolanaLedgerSigner<N extends Network, C extends Chain>
     connection: Connection,
     path: string
   ): Promise<SolanaLedgerSigner<Network, C>> {
+    console.log(path);
     const signer = await LedgerSigner.create(path);
+    console.log(signer);
     const address = encoding.b58.encode(await signer.getAddress());
+    console.log(address);
     return new SolanaLedgerSigner(connection, signer, address, chain);
   }
 
@@ -47,17 +50,8 @@ export class SolanaLedgerSigner<N extends Network, C extends Chain>
         transaction.message.recentBlockhash = blockhash;
       } else {
         transaction.recentBlockhash = blockhash;
+        transaction.lastValidBlockHeight = lastValidBlockHeight;
       }
-
-      const signature = await this._signer.signTransaction(
-        Buffer.from(
-          transaction.serialize({
-            requireAllSignatures: false,
-            verifySignatures: false,
-          })
-        )
-      );
-      transaction.addSignature(new PublicKey(this.address()), signature);
 
       if (signers && signers.length > 0) {
         if (isVersionedTransaction(transaction)) {
@@ -67,6 +61,14 @@ export class SolanaLedgerSigner<N extends Network, C extends Chain>
         }
       }
 
+      const serialized = isVersionedTransaction(transaction)
+        ? transaction.serialize()
+        : transaction.compileMessage().serialize();
+
+      const signature = await this._signer.signTransaction(
+        Buffer.from(serialized)
+      );
+      transaction.addSignature(new PublicKey(this.address()), signature);
       signed.push(transaction.serialize());
     }
 
