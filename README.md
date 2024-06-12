@@ -1,3 +1,9 @@
+:warning: Use the maintained examples in [this repo](https://github.com/wormholelabs-xyz/example-wormhole-sdk-ts) :warning:
+
+
+
+
+
 Ez Mode 
 -------
 
